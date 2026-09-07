@@ -257,6 +257,14 @@
       baseOdds: 0.036
       persists: false
       effect: !type:PlantMutateHarvest
+    - name: Electrified
+      baseOdds: 1.0
+      appliesToPlant: true
+      appliesToProduce: true
+      persists: true
+      effect: !type:BotanyElectrify
+        shockDamage: 5
+        electrocuteTime: 1
 
 - type: randomPlantMutationList
   id: EvilPlantMutations
