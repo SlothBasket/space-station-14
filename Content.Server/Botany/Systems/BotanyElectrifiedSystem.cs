@@ -43,7 +43,7 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
         Entity<BotanyElectrifiedComponent> ent,
         ref GotEquippedHandEvent args)
     {
-        // Items held in a hand are parented to the entity holding them..
+        // Items held in a hand are parented to the entity holding them.
         var user = Transform(ent.Owner).ParentUid;
 
         Shock(
