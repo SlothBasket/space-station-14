@@ -1,56 +1,22 @@
-﻿using Content.Shared.Botany.Components;
-using Content.Shared.Botany.Items.Components;
+﻿using Robust.Shared.GameStates;
 
-namespace Content.Shared.EntityEffects.Effects.Botany;
-
-/// <summary>
-/// Applies the electrified mutation to a living plant.
-/// </summary>
-public sealed partial class BotanyElectrifyPlantEntityEffectSystem
-    : EntityEffectSystem<PlantComponent, BotanyElectrify>
-{
-    protected override void Effect(
-        Entity<PlantComponent> entity,
-        ref EntityEffectEvent<BotanyElectrify> args)
-    {
-        var electrified = EnsureComp<BotanyElectrifiedComponent>(entity.Owner);
-
-        electrified.ShockDamage = args.Effect.ShockDamage;
-        electrified.ElectrocuteTime = args.Effect.ElectrocuteTime;
-        Dirty(entity.Owner, electrified);
-    }
-}
+namespace Content.Shared.Botany.Components;
 
 /// <summary>
-/// Applies the electrified mutation to harvested produce.
+/// Causes a plant or its produce to electrocute entities on contact.
 /// </summary>
-public sealed partial class BotanyElectrifyProduceEntityEffectSystem
-    : EntityEffectSystem<ProduceComponent, BotanyElectrify>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class BotanyElectrifiedComponent : Component
 {
-    protected override void Effect(
-        Entity<ProduceComponent> entity,
-        ref EntityEffectEvent<BotanyElectrify> args)
-    {
-        var electrified = EnsureComp<BotanyElectrifiedComponent>(entity.Owner);
-
-        electrified.ShockDamage = args.Effect.ShockDamage;
-        electrified.ElectrocuteTime = args.Effect.ElectrocuteTime;
-        Dirty(entity.Owner, electrified);
-    }
-}
-
-public class BotanyElectrifiedComponent
-{
-}
-
-/// <summary>
-/// Electrifies a plant or its produce.
-/// </summary>
-public sealed partial class BotanyElectrify : EntityEffectBase<BotanyElectrify>
-{
-    [DataField]
+    /// <summary>
+    /// Shock damage dealt by the electrocution.
+    /// </summary>
+    [DataField, AutoNetworkedField]
     public int ShockDamage = 5;
 
-    [DataField]
+    /// <summary>
+    /// Duration of the electrocution in seconds.
+    /// </summary>
+    [DataField, AutoNetworkedField]
     public float ElectrocuteTime = 1f;
 }
