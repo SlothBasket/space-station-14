@@ -1,0 +1,17 @@
+﻿- type: entity
+  id: EffectBotanyTraySparks
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 1.0
+  - type: Sprite
+    drawdepth: Effects
+    noRot: true
+    scale: 1,1
+    layers:
+    - sprite: Effects/electricity.rsi
+      state: electrified
+      shader: unshaded
+  - type: Tag
+    tags:
+    - HideContextMenu

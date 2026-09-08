@@ -24,6 +24,7 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
     [Dependency] private StatusEffectsSystem _statusEffects = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private PlantSystem _plant = default!;
 
     // Collision and thrown-hit events can report the same contact in one tick.
     // Record attempts before shocking to also prevent reentrant shocks.
@@ -147,6 +148,24 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
             TimeSpan.FromSeconds(source.Comp.ElectrocuteTime),
             refresh: true);
         _shockResults[key] = shocked;
+
+        if (shocked)
+            ShowTraySparks(source.Owner);
+
         return shocked;
+    }
+
+    /// <summary>
+    /// Shows sparks at the tray after a living plant successfully shocks someone.
+    /// </summary>
+    private void ShowTraySparks(EntityUid source)
+    {
+        if (!TryComp<PlantHolderComponent>(source, out var holder) || holder.Dead)
+            return;
+
+        if (!_plant.TryGetTray(source, out var tray))
+            return;
+
+        Spawn("EffectBotanyTraySparks", Transform(tray.Owner).Coordinates);
     }
 }
