@@ -9,6 +9,7 @@ using Content.Shared.Throwing;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
+using Content.Shared.Botany.Events;
 
 namespace Content.Shared.Botany.Systems;
 
@@ -41,8 +42,8 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
         SubscribeLocalEvent<PlantTrayComponent, InteractUsingEvent>(OnTrayInteractUsing);
         SubscribeLocalEvent<BotanyElectrifiedComponent, InteractHandEvent>(OnInteractHand,
             before: [typeof(PlantHarvestSystem)]);
-        SubscribeLocalEvent<PlantTrayComponent, InteractHandEvent>(OnTrayInteractHand,
-            before: [typeof(PlantHarvestSystem)]);
+        SubscribeLocalEvent<BotanyElectrifiedComponent, PlantHarvestAttemptEvent>(OnHarvestAttempt,
+            before: [typeof(PlantTraitLigneousSystem)]);
     }
 
     private void OnCollide(Entity<BotanyElectrifiedComponent> ent, ref StartCollideEvent args)
@@ -75,10 +76,20 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
             args.Handled = true;
     }
 
-    private void OnInteractHand(Entity<BotanyElectrifiedComponent> ent, ref InteractHandEvent args)
+    private void OnInteractHand(
+        Entity<BotanyElectrifiedComponent> ent,
+        ref InteractHandEvent args)
     {
         if (!args.Handled && TryShock(args.User, ent))
             args.Handled = true;
+    }
+
+    private void OnHarvestAttempt(
+        Entity<BotanyElectrifiedComponent> ent,
+        ref PlantHarvestAttemptEvent args)
+    {
+        if (!args.Cancelled && TryShock(args.User, ent))
+            args.Cancelled = true;
     }
 
     private void OnTrayInteractHand(Entity<PlantTrayComponent> ent, ref InteractHandEvent args)
