@@ -39,7 +39,8 @@ public sealed partial class BotanyElectrifiedSystem : EntitySystem
         SubscribeLocalEvent<BotanyElectrifiedComponent, BeforeGettingEquippedHandEvent>(OnBeforePickup);
         SubscribeLocalEvent<BotanyElectrifiedComponent, InteractUsingEvent>(OnInteractUsing,
             before: [typeof(PlantTraitLigneousSystem)]);
-        SubscribeLocalEvent<PlantTrayComponent, InteractUsingEvent>(OnTrayInteractUsing);
+        SubscribeLocalEvent<PlantTrayComponent, InteractUsingEvent>(OnTrayInteractUsing,
+            before: [typeof(PlantTraitLigneousSystem)]);
         SubscribeLocalEvent<BotanyElectrifiedComponent, InteractHandEvent>(OnInteractHand,
             before: [typeof(PlantHarvestSystem)]);
         SubscribeLocalEvent<BotanyElectrifiedComponent, PlantHarvestAttemptEvent>(OnHarvestAttempt,
