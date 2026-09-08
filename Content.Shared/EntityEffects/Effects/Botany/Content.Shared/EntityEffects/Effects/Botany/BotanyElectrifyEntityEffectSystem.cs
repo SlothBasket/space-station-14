@@ -17,6 +17,7 @@ public sealed partial class BotanyElectrifyPlantEntityEffectSystem
 
         electrified.ShockDamage = args.Effect.ShockDamage;
         electrified.ElectrocuteTime = args.Effect.ElectrocuteTime;
+        Dirty(entity.Owner, electrified);
     }
 }
 
@@ -34,6 +35,7 @@ public sealed partial class BotanyElectrifyProduceEntityEffectSystem
 
         electrified.ShockDamage = args.Effect.ShockDamage;
         electrified.ElectrocuteTime = args.Effect.ElectrocuteTime;
+        Dirty(entity.Owner, electrified);
     }
 }
 
